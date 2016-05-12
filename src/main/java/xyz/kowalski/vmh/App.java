@@ -4,6 +4,8 @@ import java.util.UUID;
 
 public class App {
 
+    private static final Versioner<Person> versioner = new Versioner<Person>();
+
     public static void main(final String[] args) {
 
         final UUID uuid = UUID.randomUUID();
@@ -16,27 +18,45 @@ public class App {
         personOrig.setId(uuid);
         personOrig.setName("Brandon");
         personOrig.setAge(23);
+        personOrig.setTest("hello");
+        personOrig.getHobbies().add(new Hobby("programming"));
+        personOrig.getHobbies().add(new Hobby("basketball"));
 
-        person.update(personOrig);
-
-        System.out.println(person.getName());
-        System.out.println("Version count: " + person.getVersions().size());
+        versioner.update(person, personOrig);
+        System.out.println(person);
+        for (final Hobby hobby : person.getHobbies()) {
+            System.out.println("hobby " + hobby.getName());
+        }
+        System.out.println("----------------------------------------\n");
 
         final Person personNew = new Person();
 
         personNew.setId(uuid);
         personNew.setName("Potato");
         personNew.setAge(6);
+        personNew.setAddress("155 Silly Walk Lane");
+        personNew.setTest("goodbye");
 
-        person.update(personNew);
+        versioner.update(person, personNew);
+        System.out.println(person);
+        for (final Hobby hobby : person.getHobbies()) {
+            System.out.println("hobby " + hobby.getName());
+        }
+        System.out.println("----------------------------------------\n");
 
-        System.out.println(person.getName());
-        System.out.println("Version count: " + person.getVersions().size());
+        versioner.loadVersion(person, 0);
+        System.out.println(person);
+        for (final Hobby hobby : person.getHobbies()) {
+            System.out.println("hobby " + hobby.getName());
+        }
+        System.out.println("----------------------------------------\n");
 
-        person.loadVersion(0);
-
-        System.out.println(person.getName());
-        System.out.println("Version count: " + person.getVersions().size());
+        versioner.loadVersion(person, 1);
+        System.out.println(person);
+        for (final Hobby hobby : person.getHobbies()) {
+            System.out.println("hobby " + hobby.getName());
+        }
+        System.out.println("----------------------------------------\n");
 
     }
 

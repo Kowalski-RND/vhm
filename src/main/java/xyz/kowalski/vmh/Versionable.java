@@ -1,22 +1,35 @@
 package xyz.kowalski.vmh;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-import org.javers.core.diff.Diff;
+import org.javers.core.metamodel.annotation.Id;
 
-public interface Versionable<T extends Serializable> {
+public abstract class Versionable implements Serializable {
 
-    int update(T update);
-    int update(Diff diff);
+    private static final long serialVersionUID = 6694175476965982736L;
 
-    T previousVersion();
+    @Id
+    private UUID id;
 
-    T nextVersion();
+    private final List<Version> versions;
 
-    T loadVersion(int version);
+    public Versionable() {
+        versions = new ArrayList<Version>();
+    }
 
-    T patch(Diff diff);
+    public UUID getId() {
+        return id;
+    }
 
-    Diff diff(T update);
+    public void setId(final UUID id) {
+        this.id = id;
+    }
+
+    public List<Version> getVersions() {
+        return versions;
+    }
 
 }

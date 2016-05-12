@@ -1,14 +1,31 @@
 package xyz.kowalski.vmh;
 
-import org.javers.core.diff.Diff;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Person extends AbstractVersionable<Person>  {
+public class Person extends Versionable  {
 
     private static final long serialVersionUID = 8559167935617547960L;
 
+    @Versioned
     private String name;
 
+    @Versioned
     private int age;
+
+    @Versioned
+    private String address;
+
+    @Versioned
+    private String test;
+
+    @Versioned
+    private final List<Hobby> hobbies;
+
+    public Person() {
+        super();
+        hobbies = new ArrayList<Hobby>();
+    }
 
     public String getName() {
         return name;
@@ -26,14 +43,29 @@ public class Person extends AbstractVersionable<Person>  {
         this.age = age;
     }
 
-    @Override
-    public Diff diff(final Person update) {
-        return javers.compare(this, update);
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(final String address) {
+        this.address = address;
+    }
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(final String test) {
+        this.test = test;
     }
 
     @Override
-    public int update(final Person update) {
-        return super.update(diff(update));
+    public String toString() {
+        return name + ", " + age + "\n" + address + "\n" + test + "\n";
+    }
+
+    public List<Hobby> getHobbies() {
+        return hobbies;
     }
 
 }
